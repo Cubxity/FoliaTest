@@ -1,0 +1,34 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Cubxity <contact@cubxity.dev>
+Date: Thu, 29 Jun 2023 21:09:54 +0200
+Subject: [PATCH] Player spawn location event
+
+
+diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
+index 654ab7fc8caa9af7dc665391a197b41599c2bc8f..23f4b436bc30d8a174ff5e581923cb802e7fa6fa 100644
+--- a/src/main/java/net/minecraft/server/players/PlayerList.java
++++ b/src/main/java/net/minecraft/server/players/PlayerList.java
+@@ -302,6 +302,23 @@ public abstract class PlayerList {
+         } else {
+             worldserver1 = worldserver;
+         }
++        // FoliaTest start
++        Location location = worldserver1.getWorld().getSpawnLocation();
++        @SuppressWarnings("removal")
++        org.spigotmc.event.player.PlayerSpawnLocationEvent ev = new com.destroystokyo.paper.event.player.PlayerInitialSpawnEvent(player.getBukkitEntity(), location);
++        this.cserver.getPluginManager().callEvent(ev);
++        if (ev.getSpawnLocation() != location) {
++            data.setValue(nbttagcompound);
++            lastKnownName.setValue(s);
++            Location spawnLocation = ev.getSpawnLocation();
++            worldserver1.loadChunksForMoveAsync(
++                player.getBoundingBoxAt(spawnLocation.x(), spawnLocation.y(), spawnLocation.z()),
++                ca.spottedleaf.concurrentutil.executor.standard.PrioritisedExecutor.Priority.HIGHER,
++                c -> toComplete.complete(spawnLocation)
++            );
++            return;
++        }
++        // FoliaTest end
+ 
+         // Paper start
+         if (nbttagcompound == null) {
