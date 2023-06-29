@@ -1,0 +1,41 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Cubxity <contact@cubxity.dev>
+Date: Thu, 29 Jun 2023 20:22:52 +0200
+Subject: [PATCH] Build changes
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 215366d7cc3720805d2dfde0662372ecede8383c..cc605cffd0674570dfa0b6076e564c79ed54e624 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -8,7 +8,7 @@ plugins {
+ 
+ dependencies {
+     // Folia start
+-    implementation(project(":folia-api"))
++    implementation(project(":foliatest-api")) // FoliaTest
+     implementation("io.papermc.paper:paper-mojangapi:1.19.3-R0.1-SNAPSHOT") {
+         exclude("io.papermc.paper", "paper-api")
+     }
+@@ -68,7 +68,7 @@ tasks.jar {
+         attributes(
+             "Main-Class" to "org.bukkit.craftbukkit.Main",
+             "Implementation-Title" to "CraftBukkit",
+-            "Implementation-Version" to "git-Folia-$implementationVersion", // Folia
++            "Implementation-Version" to "git-FoliaTest-$implementationVersion", // FoliaTest
+             "Implementation-Vendor" to date, // Paper
+             "Specification-Title" to "Bukkit",
+             "Specification-Version" to project.version,
+diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
+index e9b6ca3aa25e140467ae866d572483050ea3fa0e..87daefeb4bc3906780914b435c7869eba45b7778 100644
+--- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
++++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
+@@ -11,7 +11,7 @@ public final class Versioning {
+     public static String getBukkitVersion() {
+         String result = "Unknown-Version";
+ 
+-        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/dev.folia/folia-api/pom.properties"); // Folia
++        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/dev.cubxity.folia/foliatest-api/pom.properties"); // FoliaTest
+         Properties properties = new Properties();
+ 
+         if (stream != null) {
